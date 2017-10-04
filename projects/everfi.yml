@@ -5,7 +5,19 @@ root: ~/Documents/projects
 
 # Project hooks
 # Run on project start, the first time
-on_project_first_start: memcached -d
+on_project_first_start:
+  - brew services start memcached
+# Run on project exit ( detaching from tmux session )
+# on_project_exit: command
+# Run on project stop
+on_project_stop:
+  - brew services stop memcached
+
+pre_window:
+  # setup project pull new changes / install new gems / update DB
+  - git up
+  - bundle install
+  - rake db:migrate
 
 windows:
   - adminifi:
@@ -18,8 +30,19 @@ windows:
             - SIDEKIQ_COUNT=1 bundle exec bin/swarm
 
   - notifi:
-      layout: even-horizontal
       root: ~/Documents/projects/notifi
       panes:
         - server:
             - foreman start
+  - content-service:
+      root: ~/Documents/projects/content-service
+      panes:
+        - server:
+          - rails s
+  - lmscompliance:
+      root: ~/Documents/projects/lmscompliance
+      panes:
+        - server:
+          - foreman start
+  - empty_bash:
+      root: ~/Documents/projects/adminifi
