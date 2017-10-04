@@ -11,6 +11,7 @@ It is used for creation and management of tmux sessions.
 - `gem install tmuxinator`
 - make sure you have the correct completion file (this repo contains the bash version). Visit 
 https://github.com/tmuxinator/tmuxinator/tree/master/completion and download the appropriate completion file.
+- create a symlink from `.tmux.conf` found in this repo to `~/.tmux.conf`
 
 ### Configurations
 - in your `.bash_profile` file add the folowing configuration
