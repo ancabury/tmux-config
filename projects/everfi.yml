@@ -1,0 +1,25 @@
+# ~/.tmuxinator/everfi.yml
+
+name: everfi
+root: ~/Documents/projects
+
+# Project hooks
+# Run on project start, the first time
+on_project_first_start: memcached -d
+
+windows:
+  - adminifi:
+      layout: even-horizontal
+      root: ~/Documents/projects/adminifi
+      panes:
+        - server:
+            - rails s
+        - pane_with_multiple_commands:
+            - SIDEKIQ_COUNT=1 bundle exec bin/swarm
+
+  - notifi:
+      layout: even-horizontal
+      root: ~/Documents/projects/notifi
+      panes:
+        - server:
+            - foreman start
