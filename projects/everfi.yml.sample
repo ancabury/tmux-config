@@ -23,6 +23,8 @@ pre_window:
   - git up
   - bundle install
   - rake db:migrate
+  - yarn install
+  - bundle exec rake react_on_rails:assets:webpack
 
 windows:
   - adminifi:
