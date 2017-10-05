@@ -1,0 +1,47 @@
+# ~/.tmuxinator/everfi.yml
+
+name: everfi
+root: default_root_path
+
+# Project hooks
+# Run on project start, the first time
+on_project_first_start:
+  - brew services start memcached
+
+# Run on project stop
+on_project_stop:
+  - brew services stop memcached
+
+pre_window:
+  # setup project pull new changes / install new gems / update DB
+  - git up
+  - bundle install
+  - rake db:migrate
+
+windows:
+  - adminifi:
+      layout: even-horizontal
+      root: path_to_adminifi_project
+      panes:
+        - server:
+            - rails s
+        - pane_with_multiple_commands:
+            - SIDEKIQ_COUNT=1 bundle exec bin/swarm
+
+  - notifi:
+      root: path_to_notifi_project
+      panes:
+        - server:
+            - foreman start
+  - content-service:
+      root: path_to_content_service_project
+      panes:
+        - server:
+          - rails s
+  - lmscompliance:
+      root: path_to_lmscompliance_project
+      panes:
+        - server:
+          - foreman start
+  - empty_bash:
+      root: path
